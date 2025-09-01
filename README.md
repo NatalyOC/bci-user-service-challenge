@@ -156,8 +156,9 @@ app.email.regex=^[a-zA-Z0-9]+@[a-zA-Z0-9]+\\.[a-zA-Z]{2,}$
 app.password.regex=^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$
 
 # Configuración JWT
-app.jwt.secret=mySecretKey
-app.jwt.expiration=86400000
+jwt.secret=A2f4T9mX+8bV7jNpLkQhYzXoF3c1uG9eR6wT0pD8kJvS5rZlYq==
+jwt.expiration.hours=24
+jwt.issuer=user-registration-api
 ```
 
 ## Base de Datos
@@ -188,8 +189,8 @@ CREATE TABLE users (
 CREATE TABLE phones (
     id UUID PRIMARY KEY,
     number VARCHAR(255) NOT NULL,
-    city_code VARCHAR(255) NOT NULL,
-    country_code VARCHAR(255) NOT NULL,
+    cityCode VARCHAR(255) NOT NULL,
+    contryCode VARCHAR(255) NOT NULL,
     user_id UUID,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
@@ -207,11 +208,6 @@ Una vez que la aplicación esté ejecutándose, puedes acceder a la documentaci�
 Ejecutar todas las pruebas:
 ```bash
 mvn test
-```
-
-Ejecutar pruebas con reporte de cobertura:
-```bash
-mvn test jacoco:report
 ```
 
 ## Ejemplos de uso
@@ -281,8 +277,8 @@ src/
 │   │   └── com/example/userapi/
 │   │       ├── UserApiApplication.java
 |   |       ├── config/
+|   |       |   ├── OpenApiConfig.java
 │   │       │   ├── SecurityConfig.java
-│   │       │   └── UserAlreadyExistsException.java
 │   │       ├── security/
 |   |       |   └── JwtAuthenticationFilter.java
 │   │       ├── exception/
@@ -317,19 +313,6 @@ src/
 
 ![Diagrama](https://github.com/NatalyOC/bci-user-service-challenge/blob/feature/challenge/Diagrama.png)
 
-```
-
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Controller    │───▶│    Service      │───▶│   Repository    │
-│  (REST Layer)   │    │ (Business Logic)│    │  (Data Access)  │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-         │                       │                       │
-         ▼                       ▼                       ▼
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│      DTOs       │    │   Validations   │    │    H2 Database  │
-│ (Data Transfer) │    │ (Email/Password)│    │   (In Memory)   │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-```
 
 ## Autor
 
